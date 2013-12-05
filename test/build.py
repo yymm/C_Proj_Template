@@ -12,15 +12,14 @@ def create_source_for_CuTest():
     """
     filename = "tests.cpp"
     include = '''
-    /* This is auto-generated code. Edit at your own peril. */
-    #include <stdio.h>
-    #include <stdlib.h>
-    
-    #include "CuTest/CuTest.h"
-    
-    extern void Setup(CuTest* tc);
-    extern void Teardown(CuTest* tc);
-    '''
+/* This is auto-generated code. Edit at your own peril. */
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "CuTest/CuTest.h"
+
+extern void Setup(CuTest* tc);
+extern void Teardown(CuTest* tc);'''
     test = ""
     extern = ""
     with open(filename) as f:
@@ -29,27 +28,25 @@ def create_source_for_CuTest():
                 extern += "extern " + line[:-1] + ";\n"
                 test += "    SUITE_ADD_TEST(suite, " + line[5:].split('(')[0] + ");\n"
     head = '''
-    void RunAllTests(void) 
-    {
-        CuString *output = CuStringNew();
-        CuSuite* suite = CuSuiteNew();
-        SUITE_ADD_TEST(suite, Setup);
-    
+void RunAllTests(void) 
+{
+    CuString *output = CuStringNew();
+    CuSuite* suite = CuSuiteNew();
+    SUITE_ADD_TEST(suite, Setup);
     '''
     tail = '''
-        SUITE_ADD_TEST(suite, Teardown);
-        CuSuiteRun(suite);
-        CuSuiteSummary(suite, output);
-        CuSuiteDetails(suite, output);
-        printf("%s\\n", output->buffer);
-        CuStringDelete(output);
-        CuSuiteDelete(suite);
-    }
-    int main(void)
-    {
-        RunAllTests();
-    }
-    '''
+    SUITE_ADD_TEST(suite, Teardown);
+    CuSuiteRun(suite);
+    CuSuiteSummary(suite, output);
+    CuSuiteDetails(suite, output);
+    printf("%s\\n", output->buffer);
+    CuStringDelete(output);
+    CuSuiteDelete(suite);
+}
+int main(void)
+{
+    RunAllTests();
+}'''
     with open("unittest.cpp", "w") as f:
         f.write(include + extern + head + test + tail)
 
