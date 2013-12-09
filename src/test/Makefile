@@ -4,8 +4,10 @@ FLAGS =
 CXX = icpc
 CC = icc
 
-UNIT_OBJS = CuTest/CuTest.o tests.o unittest.o
-JOIN_OBJS = jointest.o
+OBJS = 
+
+UNIT_OBJS = CuTest/CuTest.o tests.o unittest.o $(OBJS)
+JOIN_OBJS = jointest.o $(OBJS)
 
 UNIT_TARGET = ./unittest
 JOIN_TARGET = ./jointest

@@ -1,10 +1,9 @@
 A project template for C language
 =================================
 
-
-
 * using CuTest : `CuTest: The Cutest C Unit Testing Framework <http://cutest.sourceforge.net/>`_
 * using Python2.x
+* using mtrace (Require: glibc)
 
 Usage
 -----
