@@ -14,10 +14,10 @@ int main()
 	module = CreateModule(2);
 
 #ifdef _DEBUG
-	printf("This is DEBUG message defined '_DEBUG' env value.");
+	printf("This is DEBUG message defined '_DEBUG' env value.\n");
 #endif
 
-	printf("Method result : %d", Method(module, 5));
+	printf("Method result : %d\n", Method(module, 5));
 
 	DeleteModule(module);
 

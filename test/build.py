@@ -50,6 +50,23 @@ int main(void)
     with open("unittest.cpp", "w") as f:
         f.write(include + extern + head + test + tail)
 
+def exec_command(cmdline, message=""):
+    print "\n## " + message + "\n"
+    p = subprocess.Popen(cmdline, shell=True,
+                         cwd='.',
+                         stdin=subprocess.PIPE,
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE,
+                         close_fds=True)
+    (stdout, stdin, stderr) = (p.stdout, p.stdin, p.stderr)
+    while True:
+        line = stdout.readline()
+        if not line:
+            break
+        print line,
+
+    return "".join(stderr.readlines())
+
 if '__main__' == __name__:
     parser = argparse.ArgumentParser(description='C-lang builder by python')
     parser.add_argument('target', type=str, nargs='?', default='jointest', help='target name in Makefile')
@@ -58,22 +75,18 @@ if '__main__' == __name__:
 
     if target != u'unittest' and target != u'jointest':
         print("Invalid argument. 'unittest' or 'jointest'")
-    print('## Build target : "'+ target + '"\n')
+    print('# Build target : "'+ target + '"')
 
     if target == u'unittest':
         create_source_for_CuTest()
 
-    cmdline = "make clean && make " + target
+    error = exec_command("make clean && make " + target, "BUILD")
 
-    p = subprocess.Popen(cmdline, shell=True,
-                         cwd='.',
-                         stdin=subprocess.PIPE,
-                         stdout=subprocess.PIPE,
-                         stderr=subprocess.STDOUT,
-                         close_fds=True)
-    (stdout, stdin) = (p.stdout, p.stdin)
-    while True:
-        line = stdout.readline()
-        if not line:
-            break
-        print line,
+    if len(error) == 0:
+        if target == u'unittest':
+            exec_command("./unittest", "UNIT TEST")
+        else:
+            exec_command("./jointest", "JOIN TEST")
+            exec_command("mtrace jointest mtrace.log", "CHECK MEMORY LEAK")
+    else:
+        print "\n****************\nERROR OCCURED...\n****************\n\n" + error
