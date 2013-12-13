@@ -1,8 +1,8 @@
 DEBUG = ok 
 FLAGS = 
 
-CXX = icpc
-CC = icc
+CXX = g++
+CC = gcc
 
 OBJS = ../Module.o ../Support.o
 
@@ -26,14 +26,14 @@ endif
 all: $(JOIN_TARGET)
 
 $(JOIN_TARGET): $(JOIN_OBJS)
-	$(CXX) $(JOIN_OBJS) -o $(JOIN_TARGET) $(CXXFLAGS) $(LDLIBS)
+	$(CC) $(JOIN_OBJS) -o $(JOIN_TARGET) $(CXXFLAGS) $(LDLIBS)
 
 .cpp.o:
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CC) $(CXXFLAGS) -c $< -o $@
 
 
 $(UNIT_TARGET): $(UNIT_OBJS)
-	$(CXX) $(UNIT_OBJS) -o $(UNIT_TARGET) $(CXXFLAGS) $(LDLIBS)
+	$(CC) $(UNIT_OBJS) -o $(UNIT_TARGET) $(CXXFLAGS) $(LDLIBS)
 
 clean:
 	rm -f $(UNIT_TARGET) $(JOIN_TARGET) $(UNIT_OBJS) $(JOIN_OBJS) *~

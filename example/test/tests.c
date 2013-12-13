@@ -11,7 +11,7 @@
 #include "../Support.h"
 
 //
-// Private member
+// Global parameter
 //
 
 Module* module = NULL;
